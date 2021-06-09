@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        binding.tvHello.text = viewModel.fetchData().title
+        viewModel.responseLiveData.observe(this) {
+            binding.tvHello.text = it.title
+        }
+        viewModel.fetchData()
     }
 }

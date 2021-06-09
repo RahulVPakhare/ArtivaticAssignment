@@ -5,7 +5,7 @@ import com.artivatic.assignment.model.Data
 
 class DataRepository(private val dataApi: DataApi) {
 
-    fun getData(): Data {
+    suspend fun getData(): Data {
         return dataApi.getData()
     }
 }

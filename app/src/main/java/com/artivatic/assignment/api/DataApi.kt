@@ -4,5 +4,5 @@ import com.artivatic.assignment.model.Data
 
 interface DataApi {
 
-    fun getData(): Data
+    suspend fun getData(): Data
 }
