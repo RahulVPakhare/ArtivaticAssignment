@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
     // View Model
     private lateinit var viewModel: MainViewModel
 
+    // RecyclerView Adapter
+    private lateinit var mainAdapter: MainAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         // Setup UI
         supportActionBar?.hide()
-        val adapter = MainAdapter(arrayListOf())
+        mainAdapter = MainAdapter(arrayListOf())
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             addItemDecoration(
@@ -45,9 +48,21 @@ class MainActivity : AppCompatActivity() {
                     (layoutManager as LinearLayoutManager).orientation
                 )
             )
-            this.adapter = adapter
+            adapter = mainAdapter
         }
 
+        getData()
+
+        // Swipe to refresh
+        binding.pullToRefresh.apply {
+            setOnRefreshListener {
+                getData()
+                isRefreshing = false
+            }
+        }
+    }
+
+    private fun getData() {
         // Setup observer
         viewModel.getData().observe(this, {
             it.let { resource ->
@@ -58,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         resource.data.let { data ->
                             title = data?.title ?: "Home"
                             supportActionBar?.show()
-                            adapter.apply {
+                            mainAdapter.apply {
                                 val rows = data?.rows?.filter { row ->
                                     row.title != null
                                 }
