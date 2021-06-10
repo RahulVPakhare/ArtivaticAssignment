@@ -2,7 +2,7 @@ package com.artivatic.assignment.model
 
 data class Data(
 	val title: String? = null,
-	val rows: List<RowsItem?>? = null
+	val rows: ArrayList<RowsItem> = ArrayList()
 )
 
 data class RowsItem(
