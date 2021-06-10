@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         )[MainViewModel::class.java]
 
         // Setup UI
+        supportActionBar?.hide()
         val adapter = MainAdapter(arrayListOf())
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity() {
                         binding.recyclerView.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
                         resource.data.let { data ->
+                            title = data?.title ?: "Home"
+                            supportActionBar?.show()
                             adapter.apply {
                                 val rows = data?.rows?.filter { row ->
                                     row.title != null
