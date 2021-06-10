@@ -1,8 +1,6 @@
 package com.artivatic.assignment.api
 
-import com.artivatic.assignment.model.Data
+class DataApi(private val retrofitApi: RetrofitApi) {
 
-interface DataApi {
-
-    suspend fun getData(): Data
+    suspend fun getData() = retrofitApi.getData()
 }

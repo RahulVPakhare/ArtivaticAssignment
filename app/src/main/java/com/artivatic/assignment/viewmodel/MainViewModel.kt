@@ -1,25 +1,19 @@
 package com.artivatic.assignment.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.artivatic.assignment.model.Data
+import androidx.lifecycle.liveData
 import com.artivatic.assignment.repo.DataRepository
-import com.artivatic.assignment.repo.ManualParsingImpl
+import com.artivatic.assignment.util.Resource
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class MainViewModel : ViewModel() {
-    private val dataRepository = DataRepository(ManualParsingImpl())
-    val responseLiveData = MutableLiveData<Data>()
+class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
-    fun fetchData() {
-        viewModelScope.launch {
-            val data = withContext(Dispatchers.IO) {
-                dataRepository.getData()
-            }
-            responseLiveData.value = data
+    fun getData() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = dataRepository.getData()))
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 }
