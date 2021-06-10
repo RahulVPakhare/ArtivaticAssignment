@@ -8,19 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.artivatic.assignment.R
 import com.artivatic.assignment.model.RowsItem
+import com.bumptech.glide.Glide
 
 class MainAdapter(private val rows: ArrayList<RowsItem>) :
     RecyclerView.Adapter<MainAdapter.RowViewHolder>() {
 
     class RowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-        val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
-        val image: ImageView = itemView.findViewById(R.id.imageView)
+        private val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+        private val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
+        private val image: ImageView = itemView.findViewById(R.id.imageView)
 
         fun bind(row: RowsItem) {
             row.apply {
                 tvTitle.text = title
                 tvDescription.text = description
+                Glide.with(image.context).load(imageHref).into(image)
             }
         }
     }
@@ -34,7 +36,7 @@ class MainAdapter(private val rows: ArrayList<RowsItem>) :
 
     override fun getItemCount(): Int = rows.size
 
-    fun setRows(rows: ArrayList<RowsItem>) {
+    fun setRows(rows: List<RowsItem>) {
         this.rows.apply {
             clear()
             addAll(rows)

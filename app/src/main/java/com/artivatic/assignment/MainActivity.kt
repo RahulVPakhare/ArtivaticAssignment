@@ -56,16 +56,22 @@ class MainActivity : AppCompatActivity() {
                         binding.progressBar.visibility = View.GONE
                         resource.data.let { data ->
                             adapter.apply {
-                                setRows(data?.rows!!)
+                                val rows = data?.rows?.filter { row ->
+                                    row.title != null
+                                }
+                                setRows(rows!!)
                                 notifyDataSetChanged()
                             }
                         }
                     }
                     Status.ERROR -> {
+                        binding.recyclerView.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
                         Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
                     }
                 }
             }
